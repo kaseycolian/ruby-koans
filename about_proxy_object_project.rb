@@ -13,25 +13,27 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # of the Proxy class is given in the AboutProxyObjectProject koan.
 
 class Proxy
+
+  attr_reader :messages
+
   def initialize(target_object)
     @object = target_object
     @messages = []
-    
     # ADD MORE CODE HERE
   end
 
   def method_missing(method_name, *args, &block)
-    @messages << method_name
-    @object.__send__(method_name, *args, &block)
+    "The #{method_name} was called with <#{args.join(", ")} using #{block}>"
+    messages << method_name
+    @object.send(method_name, *args, &block)
   end
 
   def called?(method_name)
-    @messages.includes?(method_name)
+    messages.include?(method_name)
   end
-  # WRITE CODE HERE
 
   def number_of_times_called(method_name)
-    times = @messages.select { |m| m == method_name}.count
+    times = messages.select { |m| m == method_name}.count
   end
 
 end
